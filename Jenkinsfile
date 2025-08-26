@@ -1,37 +1,31 @@
-stage('Construire image Docker') {
-    steps {
-        script {
-            bat 'docker build -t calculatrice-app .'
-        }
-    }
-}
+pipeline {
+    agent any
 
-stage('Déployer en TEST') {
-    steps {
-        script {
-            bat 'docker run -d -p 3001:3000 --name calculatrice-test calculatrice-app'
+    stages {
+        stage('Cloner le code') {
+            steps {
+                // On clone le repo Github
+            }
         }
-    }
-}
 
-stage('Exécuter les tests Selenium') {
-    steps {
-        script {
-            bat 'npm install selenium-webdriver'
-            bat 'node test_calculatrice.js'
+        stage('Construire et tester') {
+            steps {
+                    // Construire l'image
+
+                    // Lancer le container → il démarre http-server + exécute test_calculatrice.js
+                }
+            }
         }
-    }
-}
 
-stage('Déployer en PROD si tests OK') {
-    when {
-        expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-    }
-    steps {
-        script {
-            bat 'docker stop calculatrice-test || exit 0'
-            bat 'docker rm calculatrice-test || exit 0'
-            bat 'docker run -d -p 3000:3000 --name calculatrice-prod calculatrice-app'
+        stage('Déployer en production') {
+            steps {
+                    // Poser la question : Voulez-vous déployer ? Oui/Non
+              
+                    // Supprimer un ancien container prod s’il existe
+              
+                    // Lancer l’appli en prod (pas les tests, juste le serveur statique)
+                }
+            }
         }
     }
 }
