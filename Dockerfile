@@ -1,18 +1,17 @@
-# Étape 1 : utiliser une image Node officielle
-FROM node:18
+FROM selenium/standalone-chrome:latest
 
-# Étape 2 : créer un dossier dans le conteneur
-WORKDIR /usr/src/app
+USER root
+RUN apt-get update && apt-get install -y curl gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Étape 3 : copier les fichiers package.json et installer les dépendances
-COPY package*.json ./
-RUN npm install
+# Définir le repertoire de travail
 
-# Étape 4 : copier tout le code de l'application
-COPY . .
+# Copier les fichiers vers le repertoire de travail
 
-# Étape 5 : exposer le port (ex : 3000 si ton app écoute sur 3000)
-EXPOSE 3000
+# Installer selenium-webdriver + http-server
 
-# Étape 6 : lancer l'application
-CMD ["npm", "start"]
+# Exposer le port 
+
+# Démarrer le serveur statique + attendre + lancer les tests
